@@ -119,6 +119,22 @@ class AddressBook {
             return grouped;
         }, {});
     }
+
+    /** Count number of contacts by City */
+    countByCity() {
+        return this.contacts.reduce((count, contact) => {
+            count[contact.city] = (count[contact.city] || 0) + 1;
+            return count;
+        }, {});
+    }
+
+    /** Count number of contacts by State */
+    countByState() {
+        return this.contacts.reduce((count, contact) => {
+            count[contact.state] = (count[contact.state] || 0) + 1;
+            return count;
+        }, {});
+    }
 }
 
 // Example Usage
@@ -140,13 +156,13 @@ try {
     console.log("All Contacts:");
     addressBook.displayContacts();
 
-    // Group by City
-    console.log("\nContacts grouped by City:");
-    console.log(addressBook.groupByCity());
+    // Count by City
+    console.log("\nCount of Contacts by City:");
+    console.log(addressBook.countByCity());
 
-    // Group by State
-    console.log("\nContacts grouped by State:");
-    console.log(addressBook.groupByState());
+    // Count by State
+    console.log("\nCount of Contacts by State:");
+    console.log(addressBook.countByState());
 
 } catch (error) {
     console.error(error.message);
