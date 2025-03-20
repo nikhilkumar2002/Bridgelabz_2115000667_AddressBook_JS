@@ -84,26 +84,32 @@ class AddressBook {
         }
     }
 
-    // Sorting contacts alphabetically by name
+    // Sorting contacts alphabetically by Name
     sortContactsByName() {
-        let sortedContacts = this.contacts.sort((a, b) => {
-            let nameA = (a.firstName + " " + a.lastName).toLowerCase();
-            let nameB = (b.firstName + " " + b.lastName).toLowerCase();
-            return nameA.localeCompare(nameB);
-        });
-
+        this.contacts.sort((a, b) => (a.firstName + " " + a.lastName).localeCompare(b.firstName + " " + b.lastName));
         console.log("\nContacts Sorted by Name:");
-        sortedContacts.forEach(contact => console.log(contact.toString()));
+        this.displayContacts();
     }
 
-    // Get count of contacts by City
-    countByCity(city) {
-        return this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase()).length;
+    // Sorting contacts by City
+    sortContactsByCity() {
+        this.contacts.sort((a, b) => a.city.localeCompare(b.city));
+        console.log("\nContacts Sorted by City:");
+        this.displayContacts();
     }
 
-    // Get count of contacts by State
-    countByState(state) {
-        return this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase()).length;
+    // Sorting contacts by State
+    sortContactsByState() {
+        this.contacts.sort((a, b) => a.state.localeCompare(b.state));
+        console.log("\nContacts Sorted by State:");
+        this.displayContacts();
+    }
+
+    // Sorting contacts by Zip Code
+    sortContactsByZip() {
+        this.contacts.sort((a, b) => a.zip.localeCompare(b.zip));
+        console.log("\nContacts Sorted by Zip:");
+        this.displayContacts();
     }
 }
 
@@ -126,12 +132,11 @@ try {
     console.log("\nAll Contacts:");
     addressBook.displayContacts();
 
-    // Sort and display contacts
+    // Sorting contacts
     addressBook.sortContactsByName();
-
-    // Count contacts by City and State
-    console.log(`\nNumber of contacts in Delhi: ${addressBook.countByCity("Delhi")}`);
-    console.log(`Number of contacts in UP: ${addressBook.countByState("UP")}`);
+    addressBook.sortContactsByCity();
+    addressBook.sortContactsByState();
+    addressBook.sortContactsByZip();
 
 } catch (error) {
     console.error(error.message);
