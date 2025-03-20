@@ -54,7 +54,7 @@ class Contact {
     }
 
     toString() {
-        return `Name: ${this.firstName} ${this.lastName}\nAddress: ${this.address}, ${this.city}, ${this.state} ${this.zip}\nPhone: ${this.phoneNumber}\nEmail: ${this.email}`;
+        return `Name: ${this.firstName} ${this.lastName}\nAddress: ${this.address}, ${this.city}, ${this.state} ${this.zip}\nPhone: ${this.phoneNumber}\nEmail: ${this.email}\n`;
     }
 }
 
@@ -64,8 +64,8 @@ class AddressBook {
     }
 
     addContact(contact) {
-        let isDuplicate = this.contacts.some(
-            c => `${c.firstName} ${c.lastName}`.toLowerCase() === `${contact.firstName} ${contact.lastName}`.toLowerCase()
+        let isDuplicate = this.contacts.some(c => 
+            `${c.firstName} ${c.lastName}`.toLowerCase() === `${contact.firstName} ${contact.lastName}`.toLowerCase()
         );
 
         if (isDuplicate) {
@@ -76,64 +76,34 @@ class AddressBook {
         console.log("Contact added successfully.");
     }
 
-    findContact(name) {
-        return this.contacts.find(contact => `${contact.firstName} ${contact.lastName}`.toLowerCase() === name.toLowerCase());
-    }
-
-    deleteContact(name) {
-        let index = this.contacts.findIndex(contact => `${contact.firstName} ${contact.lastName}`.toLowerCase() === name.toLowerCase());
-        if (index === -1) {
-            console.log("Contact not found.");
-            return;
-        }
-        this.contacts.splice(index, 1);
-        console.log("Contact deleted successfully.");
-    }
-
-    getContactCount() {
-        return this.contacts.length;
-    }
-
     displayContacts() {
         if (this.contacts.length === 0) {
             console.log("No contacts found.");
         } else {
-            this.contacts.forEach(contact => console.log(contact.toString() + "\n"));
+            this.contacts.forEach(contact => console.log(contact.toString()));
         }
     }
 
-    /** Group contacts by City */
-    groupByCity() {
-        return this.contacts.reduce((grouped, contact) => {
-            grouped[contact.city] = grouped[contact.city] || [];
-            grouped[contact.city].push(`${contact.firstName} ${contact.lastName}`);
-            return grouped;
-        }, {});
+    // Sorting contacts alphabetically by name
+    sortContactsByName() {
+        let sortedContacts = this.contacts.sort((a, b) => {
+            let nameA = (a.firstName + " " + a.lastName).toLowerCase();
+            let nameB = (b.firstName + " " + b.lastName).toLowerCase();
+            return nameA.localeCompare(nameB);
+        });
+
+        console.log("\nContacts Sorted by Name:");
+        sortedContacts.forEach(contact => console.log(contact.toString()));
     }
 
-    /** Group contacts by State */
-    groupByState() {
-        return this.contacts.reduce((grouped, contact) => {
-            grouped[contact.state] = grouped[contact.state] || [];
-            grouped[contact.state].push(`${contact.firstName} ${contact.lastName}`);
-            return grouped;
-        }, {});
+    // Get count of contacts by City
+    countByCity(city) {
+        return this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase()).length;
     }
 
-    /** Count number of contacts by City */
-    countByCity() {
-        return this.contacts.reduce((count, contact) => {
-            count[contact.city] = (count[contact.city] || 0) + 1;
-            return count;
-        }, {});
-    }
-
-    /** Count number of contacts by State */
-    countByState() {
-        return this.contacts.reduce((count, contact) => {
-            count[contact.state] = (count[contact.state] || 0) + 1;
-            return count;
-        }, {});
+    // Get count of contacts by State
+    countByState(state) {
+        return this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase()).length;
     }
 }
 
@@ -153,16 +123,15 @@ try {
     addressBook.addContact(contact4);
     addressBook.addContact(contact5);
 
-    console.log("All Contacts:");
+    console.log("\nAll Contacts:");
     addressBook.displayContacts();
 
-    // Count by City
-    console.log("\nCount of Contacts by City:");
-    console.log(addressBook.countByCity());
+    // Sort and display contacts
+    addressBook.sortContactsByName();
 
-    // Count by State
-    console.log("\nCount of Contacts by State:");
-    console.log(addressBook.countByState());
+    // Count contacts by City and State
+    console.log(`\nNumber of contacts in Delhi: ${addressBook.countByCity("Delhi")}`);
+    console.log(`Number of contacts in UP: ${addressBook.countByState("UP")}`);
 
 } catch (error) {
     console.error(error.message);
