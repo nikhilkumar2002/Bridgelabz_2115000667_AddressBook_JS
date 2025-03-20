@@ -102,30 +102,22 @@ class AddressBook {
         }
     }
 
-    getAllContactNames() {
-        return this.contacts.map(contact => `${contact.firstName} ${contact.lastName}`);
+    /** Group contacts by City */
+    groupByCity() {
+        return this.contacts.reduce((grouped, contact) => {
+            grouped[contact.city] = grouped[contact.city] || [];
+            grouped[contact.city].push(`${contact.firstName} ${contact.lastName}`);
+            return grouped;
+        }, {});
     }
 
-    countContactsByCity(city) {
-        return this.contacts.filter(contact => contact.city.toLowerCase() === city.toLowerCase()).length;
-    }
-
-    countContactsByState(state) {
-        return this.contacts.filter(contact => contact.state.toLowerCase() === state.toLowerCase()).length;
-    }
-
-    /** Search for persons in a particular city */
-    searchByCity(city) {
-        return this.contacts
-            .filter(contact => contact.city.toLowerCase() === city.toLowerCase())
-            .map(contact => contact.toString());
-    }
-
-    /** Search for persons in a particular state */
-    searchByState(state) {
-        return this.contacts
-            .filter(contact => contact.state.toLowerCase() === state.toLowerCase())
-            .map(contact => contact.toString());
+    /** Group contacts by State */
+    groupByState() {
+        return this.contacts.reduce((grouped, contact) => {
+            grouped[contact.state] = grouped[contact.state] || [];
+            grouped[contact.state].push(`${contact.firstName} ${contact.lastName}`);
+            return grouped;
+        }, {});
     }
 }
 
@@ -137,23 +129,24 @@ try {
     let contact2 = new Contact("Amit", "Sharma", "Delhi NCR", "Delhi", "DL", "110001", "9123456789", "amit.sharma@gmail.com");
     let contact3 = new Contact("Rahul", "Verma", "MG Road", "Delhi", "DL", "110002", "9345678901", "rahul.verma@gmail.com");
     let contact4 = new Contact("Sita", "Gupta", "Varanasi", "Varanasi", "UP", "221002", "9876541230", "sita.gupta@gmail.com");
+    let contact5 = new Contact("Mohan", "Yadav", "Lucknow", "Lucknow", "UP", "226001", "8765432109", "mohan.yadav@gmail.com");
 
     addressBook.addContact(contact1);
     addressBook.addContact(contact2);
     addressBook.addContact(contact3);
     addressBook.addContact(contact4);
+    addressBook.addContact(contact5);
 
     console.log("All Contacts:");
     addressBook.displayContacts();
-    console.log(`Total Contacts: ${addressBook.getContactCount()}`);
 
-    // Search for persons in a specific city
-    console.log("\nContacts in Delhi:");
-    console.log(addressBook.searchByCity("Delhi").join("\n"));
+    // Group by City
+    console.log("\nContacts grouped by City:");
+    console.log(addressBook.groupByCity());
 
-    // Search for persons in a specific state
-    console.log("\nContacts in UP:");
-    console.log(addressBook.searchByState("UP").join("\n"));
+    // Group by State
+    console.log("\nContacts grouped by State:");
+    console.log(addressBook.groupByState());
 
 } catch (error) {
     console.error(error.message);
